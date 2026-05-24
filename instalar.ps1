@@ -1,7 +1,15 @@
-# 1. Definir caminhos
+# 1. Definições
 $myFolder = "$env:AppData\Questions"
+$anydeskDir = "$env:AppData\AnyDesk"
 $startupPath = "$env:AppData\Microsoft\Windows\Start Menu\Programs\Startup"
-$anydeskConfigDir = "C:\ProgramData\AnyDesk" # Pasta de sistema do AnyDesk
+
+# 2. Copiar o teu system.conf para o local correto
+# Nota: O AnyDesk tem de ser encerrado antes de substituir o config
+Stop-Process -Name "AnyDesk" -Force -ErrorAction SilentlyContinue
+
+if (Test-Path $anydeskDir) {
+    Copy-Item -Path "$myFolder\system.conf" -Destination "$anydeskDir\system.conf" -Force
+}
 
 # 2. Criar a pasta local
 if (!(Test-Path $myFolder)) { New-Item -ItemType Directory -Path $myFolder | Out-Null }
